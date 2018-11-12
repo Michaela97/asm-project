@@ -15,7 +15,7 @@
     <Name>turn_on_led</Name>
     <RootNamespace>turn_on_led</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
-    <EntryFile>$(MSBuildProjectDirectory)\game_logic.asm</EntryFile>
+    <EntryFile>$(MSBuildProjectDirectory)\turn_on_led.asm</EntryFile>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>

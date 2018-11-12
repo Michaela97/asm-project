@@ -1,0 +1,19 @@
+A - 12345678
+C - 12345678
+
+>> - circular shift right
+<< - circular shift left
+
+Start -      C = 01000000
+	     A = 11111101
+Ball move up:
+	C >> 1 = 00100000
+Ball move down:
+	C << 1 = 10000000
+
+Ball move right:
+	A << 1 = 11111011
+
+Ball move left:
+	A >> 1 = 11110111 
+
