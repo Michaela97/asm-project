@@ -5,22 +5,22 @@ main:
 	out ddrc, r16
 
 	call row_one
-	call delay_5ms
+	call delay_10ms
 
 	call row_two
-	call delay_5ms
+	call delay_10ms
 
 	call row_three
-	call delay_5ms
+	call delay_10ms
 
 	call row_four
-	call delay_5ms
+	call delay_10ms
 	
 	call ball
-	call delay_5ms
+	call delay_10ms
 
 	call paddle
-	call delay_5ms
+	call delay_10ms
 
 
 
@@ -29,17 +29,20 @@ main:
 
 
 ; 20 ms delay subroutine
-delay_5ms:
-    ldi r20, 1
+delay_10ms:
+	ldi r20, 2
 delay_loop_1:
-	ldi r21, 105
-delay_loop_2:
-	ldi r22, 154
-delay_loop_3:
+    ldi r21, 50 
+delay_loop_2: 
+	ldi r22, 100
+delay_loop_3: ;
 	dec r22
+	nop
 	brne delay_loop_3
+
 	dec r21
 	brne delay_loop_2
+
 	dec r20
 	brne delay_loop_1
     ret
@@ -92,20 +95,3 @@ paddle:
 	out portc, r16
 	ret
 
-Delay_1sec:                 ; For CLK(CPU) = 1 MHz
-    LDI     dly1,   64       ; One clock cycle;
-Delay1:
-    LDI     dly2,   125     ; One clock cycle
-Delay2:
-    LDI     dly3,   250     ; One clock cycle
-Delay3:
-    DEC     dly3            ; One clock cycle
-    NOP                     ; One clock cycle
-    BRNE    Delay3          ; Two clock cycles when jumping to Delay3, 1 clock when continuing to DEC
-
-    DEC     dly2            ; One clock cycle
-    BRNE    Delay2          ; Two clock cycles when jumping to Delay2, 1 clock when continuing to DEC
-
-    DEC     dly1            ; One clock Cycle
-    BRNE    Delay1          ; Two clock cycles when jumping to Delay1, 1 clock when continuing to RET
-RET
