@@ -2,7 +2,7 @@
 
 ## 1.	Problem Formulation
       
-* How to create a game out of the components from Arduino Kit…..?
+* How to create a game out of the components from Arduino Kit?
 * How to connect LED matrix display to the Arduino ?
 * How to control the program flow ?
 
