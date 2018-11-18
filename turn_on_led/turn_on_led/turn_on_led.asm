@@ -1,15 +1,21 @@
 
 .def ballCol = r17
 .def ballRow = r18
+.def paddleCol = r19
 
 LDI R16, 0b11111111           ; writing bit pattern 1000 0000 to register 16
 OUT DDRA, R16           ; setup data direction for port A
 out ddrc, r16
 ldi ballCol, 0b11101111 ; ball column
-ldi ballRow, 0b10000000 ; ball row
+ldi ballRow, 0b01000000 ; ball row
 
-ldi		r20, 0xff
-out		ddrg, r20	    ; set port C to input
+ldi paddleCol, 0b11000111 ; paddle column
+
+ldi		r20, 0xff		; right button
+out		ddrg, r20	    ; set port G to input
+
+ldi		r20, 0xff		; left button
+out		ddrb, r20	    ; set port K to input
 
 main:
 	ldi r25, 12 ; number of display loop iteration before game logic
@@ -31,7 +37,7 @@ display:
 	call ball
 	call delay_10ms
 
-	;call paddle
+	call paddle
 	call delay_10ms
 	;60ms
 
@@ -47,9 +53,12 @@ game:
 	rjmp main
 
 button:
-	in r20, PING ; read from button on PING (41) to r19
+	in r20, PINB ; read from button on PING (41) to r20
 	cpi r20, 0
-	brne move_ball_right
+	brne move_paddle_right
+	in r20, PING
+	cpi r20, 0
+	brne move_paddle_left
 	ret
 	
 	rjmp main
@@ -98,7 +107,7 @@ paddle:
 	ldi r16, 0b10000000
 	out porta, r16
 	
-	ldi r16, 0b11100011
+	mov r16, paddleCol
 	out portc, r16
 	ret
 
@@ -130,7 +139,27 @@ move_ball_left:
     ror ballCol
     bld ballCol,7
 	ret
-	
+
+move_paddle_right:
+;circular shift left
+	cpi paddleCol, 0b00011111
+	breq return
+	bst paddleCol, 7
+    rol paddleCol
+    bld paddleCol, 0
+	ret	
+
+move_paddle_left:
+;circular shift right
+	cpi paddleCol, 0b11111000
+	breq return
+	bst paddleCol,0
+    ror paddleCol
+    bld paddleCol,7
+	ret
+
+return: ;return to last call, use with branch
+	ret
 
 ;circural shift left
 rolc:  bst r0,7
