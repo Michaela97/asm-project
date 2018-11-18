@@ -2,12 +2,16 @@
 .def ballCol = r17
 .def ballRow = r18
 .def paddleCol = r19
+.def vectorX = r23
+.def vectorY = r24
 
 LDI R16, 0b11111111           ; writing bit pattern 1000 0000 to register 16
 OUT DDRA, R16           ; setup data direction for port A
 out ddrc, r16
 ldi ballCol, 0b11101111 ; ball column
 ldi ballRow, 0b01000000 ; ball row
+ldi vectorX, 0b00000010 ; 100 left / 010 middle / 001 right
+ldi vectorY, 0b00000010 ; 10 up / 01 down
 
 ldi paddleCol, 0b11000111 ; paddle column
 
@@ -50,6 +54,8 @@ display:
 game:
 
 	call button
+	call movementX
+	call movementY
 	rjmp main
 
 button:
@@ -63,6 +69,21 @@ button:
 	
 	rjmp main
 
+movementX:
+	cpi vectorX, 0b00000010
+	breq return
+	cpi vectorX, 0b00000100
+	breq move_ball_right
+	cpi vectorX, 0b00000001
+	breq move_ball_left
+	ret
+
+movementY:
+	cpi vector, 0b00000010
+	breq move_ball_up
+	cpi vector, 0b00000001
+	breq move_ball_down
+	ret
 
 
 row_one:
