@@ -54,7 +54,8 @@ display:
 game:
 
 	call button
-	call movement
+	call movementX
+	call movementY
 	rjmp main
 
 button:
@@ -68,8 +69,21 @@ button:
 	
 	rjmp main
 
-movement:
-	ldi 
+movementX:
+	cpi vectorX, 0b00000010
+	breq return
+	cpi vectorX, 0b00000100
+	breq move_ball_right
+	cpi vectorX, 0b00000001
+	breq move_ball_left
+	ret
+
+movementY:
+	cpi vector, 0b00000010
+	breq move_ball_up
+	cpi vector, 0b00000001
+	breq move_ball_down
+	ret
 
 
 row_one:
