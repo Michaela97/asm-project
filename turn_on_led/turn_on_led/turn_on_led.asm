@@ -8,11 +8,14 @@ out ddrc, r16
 ldi ballCol, 0b11101111 ; ball column
 ldi ballRow, 0b10000000 ; ball row
 
-ldi r24, 4
+ldi		r20, 0xff
+out		ddrg, r20	    ; set port C to input
+
 main:
 	ldi r25, 12 ; number of display loop iteration before game logic
 	
 display:
+		
 	;call row_one
 	call delay_10ms
 
@@ -39,30 +42,15 @@ display:
 
 
 game:
-	cpi r24, 4
-	brne no4
-	call move_ball_up
 
-no4:
-	cpi r24, 3
-	brne no3
-	call move_ball_right
+	call button
+	rjmp main
 
-no3:
-	cpi r24, 2
-	brne no2
-	call move_ball_down
-
-no2:
-	cpi r24, 1
-	brne no1
-	call move_ball_left
- 
-no1:
-	dec r24
-	cpi r24, 0 ;copmare skip if equal
-	brne main
-	ldi r24, 4
+button:
+	in r20, PING ; read from button on PING (41) to r19
+	cpi r20, 0
+	brne move_ball_right
+	ret
 	
 	rjmp main
 
