@@ -53,6 +53,10 @@ display:
 
 game:
 
+	call check_ball_top
+	call check_ball_left_wall
+	call check_ball_right_wall
+
 	call button
 	call movementX
 	call movementY
@@ -189,7 +193,26 @@ check_ball_top:
 	ret
 
 revertY:
-	vectorY
+	ldi vectorY, 0b00000001
+	ret
+
+check_ball_left_wall:
+	cpi ballCol, 0b11111110
+	breq change_X_to_right
+	ret
+
+change_X_to_right:
+	ldi vectorX, 0b00000001
+	ret
+
+check_ball_right_wall:
+	cpi ballCol, 0b01111111
+	breq change_X_to_left
+	ret
+
+change_X_to_left:
+	ldi vectorX, 0b00000100
+	ret
 
 
 ;circural shift left
