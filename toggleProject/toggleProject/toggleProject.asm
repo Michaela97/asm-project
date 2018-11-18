@@ -3,7 +3,7 @@
 
 init:
     ldi		r16, 0x00
-	out		ddrc, r16	    ; set port C to input
+	out		ddrg, r16	    ; set port C to input
 	ldi		r16, 0xff
 	;out     portc, r16      ; enable internal pull-up resistors on port C
     out		ddra, r16	    ; set port A to output
