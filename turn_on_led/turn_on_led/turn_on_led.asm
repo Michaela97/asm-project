@@ -10,7 +10,7 @@ OUT DDRA, R16           ; setup data direction for port A
 out ddrc, r16
 ldi ballCol, 0b11101111 ; ball column
 ldi ballRow, 0b01000000 ; ball row
-ldi vectorX, 0b00000010 ; 100 left / 010 middle / 001 right
+ldi vectorX, 0b00000001 ; 100 left / 010 middle / 001 right
 ldi vectorY, 0b00000010 ; 10 up / 01 down
 
 ldi paddleCol, 0b11000111 ; paddle column
@@ -52,7 +52,6 @@ display:
 
 
 game:
-
 	call check_ball_top
 	call check_ball_left_wall
 	call check_ball_right_wall
@@ -77,16 +76,92 @@ movementX:
 	cpi vectorX, 0b00000010
 	breq return
 	cpi vectorX, 0b00000100
-	breq move_ball_right
-	cpi vectorX, 0b00000001
 	breq move_ball_left
+	cpi vectorX, 0b00000001
+	breq move_ball_right
 	ret
 
 movementY:
-	cpi vector, 0b00000010
+	cpi vectorY, 0b00000010
 	breq move_ball_up
-	cpi vector, 0b00000001
+	cpi vectorY, 0b00000001
 	breq move_ball_down
+	ret
+
+move_paddle_right:
+;circular shift left
+	cpi paddleCol, 0b00011111
+	breq return
+	bst paddleCol, 7
+    rol paddleCol
+    bld paddleCol, 0
+	ret	
+
+move_paddle_left:
+;circular shift right
+	cpi paddleCol, 0b11111000
+	breq return
+	bst paddleCol,0
+    ror paddleCol
+    bld paddleCol,7
+	ret
+
+return: ;return to last call, use with branch
+	ret
+
+move_ball_up:
+;circural shift right
+	bst ballRow, 0
+    ror ballRow
+    bld ballRow, 7
+	ret
+
+move_ball_down:
+;circular shift left
+	bst ballRow, 7
+    rol ballRow
+    bld ballRow, 0
+	ret
+
+move_ball_right:
+;circular shift left
+	bst ballCol, 7
+    rol ballCol
+    bld ballCol, 0
+	ret
+
+move_ball_left:
+;circular shift right
+	bst ballCol,0
+    ror ballCol
+    bld ballCol,7
+	ret
+
+check_ball_top:
+	cpi ballRow, 0b00000001
+	breq revertY
+	ret
+
+revertY:
+	ldi vectorY, 0b00000001
+	ret
+
+check_ball_left_wall:
+	cpi ballCol, 0b11111110
+	breq change_X_to_right
+	ret
+
+change_X_to_right:
+	ldi vectorX, 0b00000001
+	ret
+
+check_ball_right_wall:
+	cpi ballCol, 0b01111111
+	breq change_X_to_left
+	ret
+
+change_X_to_left:
+	ldi vectorX, 0b00000100
 	ret
 
 
@@ -135,96 +210,6 @@ paddle:
 	mov r16, paddleCol
 	out portc, r16
 	ret
-
-
-move_ball_up:
-;circural shift right
-	bst ballRow, 0
-    ror ballRow
-    bld ballRow, 7
-	ret
-
-move_ball_down:
-;circular shift left
-	bst ballRow, 7
-    rol ballRow
-    bld ballRow, 0
-	ret
-
-move_ball_right:
-;circular shift left
-	bst ballCol, 7
-    rol ballCol
-    bld ballCol, 0
-	ret
-
-move_ball_left:
-;circular shift right
-	bst ballCol,0
-    ror ballCol
-    bld ballCol,7
-	ret
-
-move_paddle_right:
-;circular shift left
-	cpi paddleCol, 0b00011111
-	breq return
-	bst paddleCol, 7
-    rol paddleCol
-    bld paddleCol, 0
-	ret	
-
-move_paddle_left:
-;circular shift right
-	cpi paddleCol, 0b11111000
-	breq return
-	bst paddleCol,0
-    ror paddleCol
-    bld paddleCol,7
-	ret
-
-return: ;return to last call, use with branch
-	ret
-
-
-check_ball_top:
-	cpi ballRow, 0b00000001
-	breq revertY
-	ret
-
-revertY:
-	ldi vectorY, 0b00000001
-	ret
-
-check_ball_left_wall:
-	cpi ballCol, 0b11111110
-	breq change_X_to_right
-	ret
-
-change_X_to_right:
-	ldi vectorX, 0b00000001
-	ret
-
-check_ball_right_wall:
-	cpi ballCol, 0b01111111
-	breq change_X_to_left
-	ret
-
-change_X_to_left:
-	ldi vectorX, 0b00000100
-	ret
-
-
-;circural shift left
-rolc:  bst r0,7
-       rol r0
-       bld r0,0
-
-;circural shift right
-rorc:  bst r0,0
-       ror r0
-       bld r0,7
-
 
 delay_10ms:
 	ldi r20, 2
