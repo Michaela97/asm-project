@@ -52,7 +52,6 @@ display:
 
 
 game:
-
 	call button
 	call movementX
 	call movementY
@@ -79,9 +78,9 @@ movementX:
 	ret
 
 movementY:
-	cpi vector, 0b00000010
+	cpi vectorY, 0b00000010
 	breq move_ball_up
-	cpi vector, 0b00000001
+	cpi vectorY, 0b00000001
 	breq move_ball_down
 	ret
 
