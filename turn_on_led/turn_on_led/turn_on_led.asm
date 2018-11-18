@@ -181,6 +181,16 @@ move_paddle_left:
 return: ;return to last call, use with branch
 	ret
 
+
+check_ball_top:
+	cpi ballRow, 0b00000001
+	breq revertY
+	ret
+
+revertY:
+	vectorY
+
+
 ;circural shift left
 rolc:  bst r0,7
        rol r0
