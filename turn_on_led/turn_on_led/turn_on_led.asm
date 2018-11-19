@@ -15,11 +15,19 @@ ldi vectorY, 0b00000010 ; 10 up / 01 down
 
 ldi paddleCol, 0b11000111 ; paddle column
 
-ldi		r20, 0xff		; right button
+ldi		r20, 0xff		; left button
 out		ddrg, r20	    ; set port G to input
 
-ldi		r20, 0xff		; left button
-out		ddrb, r20	    ; set port K to input
+ldi		r20, 0xff		; right button
+out		ddrb, r20	    ; set port B to input
+
+game_start:
+	in r20, PING
+	cpi r20, 0
+	breq game_start
+	in r20, PINB
+	cpi r20, 0
+	breq game_start
 
 main:
 	ldi r25, 12 ; number of display loop iteration before game logic
