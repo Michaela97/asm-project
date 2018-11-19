@@ -45,3 +45,22 @@ Components:
 * 1 breadboard
 * Resistors  
 * Wires
+
+### 2.2 Test plan
+* Arduino is turned on -> Blocks, paddle and ball are in starting positions {image here}
+* Start button is pressed -> the ball is released in random direction, the game starts
+* Start button pressed during game -> nothing happens 
+* Left or right button pressed when the game is not started -> nothing happens
+* Left button pressed during the game - >  the paddle moves to the left one pixel
+* Left button pressed when the paddle is next to left wall -> nothing happens
+* Right button pressed during the game - >  the paddle moves to the right one pixel
+* Right button pressed when the paddle is next to right wall -> nothing happens
+* When the right and the left button are pressed -> paddle is not moving 
+* The ball hits the middle of the paddle -> the ball is bounced perpendicularly to the paddle
+* The paddle hits the edge of the paddle -> the ball is bounced and it continues its movement on X axis and reversed movement in Y axis.
+* The ball hits the block (has the same coordinates) -> the block is destroyed (LED turned off) and ball continues its movement on X axis and reversed movement in Y axis.
+* The ball hits the left of right wall -> it continues its movement on Y axis and reversed movement in X axis.
+* The ball hits the top  wall -> it continues its movement on X axis and reversed movement in Y axis.
+* The ball is in the bottom row -> the game is over, player loses – show sad face
+* The ball didn’t hit anything -> ball continues the movement according to its current vector
+* The ball hits the last block -> the game is over, player wins – show happy face
