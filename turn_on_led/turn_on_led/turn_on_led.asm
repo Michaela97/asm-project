@@ -52,13 +52,16 @@ display:
 
 
 game:
+	call button					; read buttons input
+	
 	call check_ball_top
 	call check_ball_left_wall
 	call check_ball_right_wall
 
-	call button
-	call movementX
-	call movementY
+	call check_ball_hit_paddle
+	
+	call movementX				; move ball in X axis
+	call movementY				; move ball in Y axis
 	rjmp main
 
 button:
@@ -139,11 +142,15 @@ move_ball_left:
 
 check_ball_top:
 	cpi ballRow, 0b00000001
-	breq revertY
+	breq change_Y_to_down
 	ret
 
-revertY:
+change_Y_to_down:
 	ldi vectorY, 0b00000001
+	ret
+
+change_Y_to_up:
+	ldi vectorY, 0b00000010
 	ret
 
 check_ball_left_wall:
@@ -164,7 +171,41 @@ change_X_to_left:
 	ldi vectorX, 0b00000100
 	ret
 
+check_ball_hit_paddle:
+	ldi	 r31, 0b01000000 ; ball on second row
+	cpse ballRow, r31
+	ret
 
+	call save_ball
+
+	call movementX  ;simulate one ball movement
+	call movementY
+
+	ldi r31, 0xff
+	mov r30, paddleCol ; load paddle pattern
+	eor r30, r31	   ; flip all bits
+
+	mov r29, ballCol   ; load ball pattern
+	eor r29, r31	   ; flip all bits
+
+	and r29, r30	   ; AND bitwise both numbers
+
+	call load_ball
+
+	cpi r29, 0		   ; if number is greater than 0, ball hit the paddle
+	brne change_Y_to_up
+	ret
+
+save_ball:
+	mov r26, ballCol
+	mov r27, ballRow 
+	ret
+
+load_ball:
+	mov ballCol, r26
+	mov ballRow, r27
+	ret
+	
 row_one:
 	ldi r16, 0b00000001
 	out porta, r16
