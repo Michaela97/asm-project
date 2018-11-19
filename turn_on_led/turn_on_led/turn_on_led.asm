@@ -22,7 +22,7 @@ ldi		r20, 0xff		; right button
 out		ddrb, r20	    ; set port B to input
 
 game_start:
-	call sad_face
+	call happy_face
 	in r20, PING
 	cpi r20, 0
 	breq game_start
@@ -312,3 +312,77 @@ sad_face:
 	call delay_10ms
 
 	rjmp sad_face
+
+happy_face:
+	;set up first row
+	ldi r16, 0b00000001
+	out porta, r16
+	
+	ldi r16, 0b11111111
+	out portc, r16
+	
+	call delay_10ms
+
+	;set up second row
+	ldi r16, 0b00000010
+	out porta, r16
+	
+	ldi r16, 0b10011001
+	out portc, r16
+	
+	call delay_10ms
+
+	;set up third row
+	ldi r16, 0b00000100
+	out porta, r16
+	
+	ldi r16, 0b10011001
+	out portc, r16
+	
+	call delay_10ms
+
+	;set up fourth row
+	ldi r16, 0b00001000
+	out porta, r16
+	
+	ldi r16, 0b11111111
+	out portc, r16
+	
+	call delay_10ms
+	;set up fifth row
+	ldi r16, 0b00010000
+	out porta, r16
+	
+	ldi r16, 0b10111101
+	out portc, r16
+	
+	call delay_10ms
+
+	;set up sixth row
+	ldi r16, 0b00100000
+	out porta, r16
+	
+	ldi r16, 0b11011011
+	out portc, r16
+	
+	call delay_10ms
+
+	;set up seventh row
+	ldi r16, 0b01000000
+	out porta, r16
+	
+	ldi r16, 0b11100111
+	out portc, r16
+	
+	call delay_10ms
+
+	;set up eighth row
+	ldi r16, 0b10000000
+	out porta, r16
+	
+	ldi r16, 0b11111111
+	out portc, r16
+	
+	call delay_10ms
+
+	rjmp happy_face
