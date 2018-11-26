@@ -4,6 +4,12 @@
 .def paddleCol = r19
 .def vectorX = r23
 .def vectorY = r24
+.def blockRow1 = r26
+.def blockRow2 = r27
+.def blockRow3 = r28
+.def blockRow4 = r29
+
+;free: r16, r30, r31
 
 LDI R16, 0b11111111           ; writing bit pattern 1000 0000 to register 16
 OUT DDRA, R16           ; setup data direction for port A
@@ -68,9 +74,13 @@ game:
 	call check_ball_right_wall
 
 	call check_ball_hit_paddle
-	
+
+	call check_ball_hit_block
+
 	call movementX				; move ball in X axis
 	call movementY				; move ball in Y axis
+
+	call check_game_over
 	rjmp main
 
 button:
@@ -194,25 +204,29 @@ check_ball_hit_paddle:
 	mov r30, paddleCol ; load paddle pattern
 	eor r30, r31	   ; flip all bits
 
-	mov r29, ballCol   ; load ball pattern
-	eor r29, r31	   ; flip all bits
+	mov r16, ballCol   ; load ball pattern
+	eor r16, r31	   ; flip all bits
 
-	and r29, r30	   ; AND bitwise both numbers
+	and r16, r30	   ; AND bitwise both numbers
 
 	call load_ball
 
-	cpi r29, 0		   ; if number is greater than 0, ball hit the paddle
+	cpi r16, 0		   ; if number is greater than 0, ball hit the paddle
 	brne change_Y_to_up
 	ret
 
 save_ball:
-	mov r26, ballCol
-	mov r27, ballRow 
+	mov r14, ballCol
+	mov r15, ballRow 
 	ret
 
 load_ball:
-	mov ballCol, r26
-	mov ballRow, r27
+	mov ballCol, r14
+	mov ballRow, r15
+	ret
+
+check_ball_hit_block:
+
 	ret
 	
 row_one:
@@ -278,6 +292,11 @@ delay_loop_3: ;
 	dec r20
 	brne delay_loop_1
     ret
+
+check_game_over:
+	cpi ballRow, 0b10000000
+	breq sad_face
+	ret
 
 sad_face:
 	;set up first row
