@@ -21,12 +21,12 @@ ldi ballRow, 0b01000000 ; ball row
 ldi vectorX, 0b00000001 ; 100 left / 010 middle / 001 right
 ldi vectorY, 0b00000010 ; 10 up / 01 down
 
-ldi blockRow1, 0b00000000
-ldi blockRow2, 0b00000000
-ldi blockRow3, 0b00000000
-ldi blockRow4, 0b00000000
+ldi blockRow1, 0b10101010
+ldi blockRow2, 0b01010101
+ldi blockRow3, 0b10101010
+ldi blockRow4, 0b01010101
 
-ldi r16, 32
+ldi r16, 16
 mov blockCounter, r16
 
 ldi paddleCol, 0b11000111 ; paddle column
@@ -37,7 +37,7 @@ out		ddrg, r20	    ; set port G to input
 ldi		r20, 0xff		; right button
 out		ddrb, r20	    ; set port B to input
 
-call main ; for debug
+;call main ; for debug
 
 game_start:
 	call start_position
@@ -54,22 +54,22 @@ main:
 display:
 		
 	call row_one
-	;call delay_10ms
+	call delay_10ms
 
 	call row_two
-	;call delay_10ms
+	call delay_10ms
 
 	call row_three
-	;call delay_10ms
+	call delay_10ms
 
 	call row_four
-	;call delay_10ms
+	call delay_10ms
 	
 	call ball
-	;call delay_10ms
+	call delay_10ms
 
 	call paddle
-	;call delay_10ms
+	call delay_10ms
 	;60ms
 
 	dec r25
@@ -81,13 +81,14 @@ display:
 game:
 	call button					; read buttons input
 	
-	call check_ball_top
 	call check_ball_left_wall
 	call check_ball_right_wall
 
 	call check_ball_hit_paddle
 
 	call check_ball_hit_block
+
+	call check_ball_top
 
 	call movementX				; move ball in X axis
 	call movementY				; move ball in Y axis
@@ -279,7 +280,9 @@ check_row1:
 	ret
 
 hitR1:
-	and blockRow1, ballCol
+	mov r16, ballCol   ; load ball pattern
+	eor r16, r31	   ; flip all bits
+	or blockRow1, r16
 	dec blockCounter
 	jmp revertY
 	ret
@@ -298,7 +301,9 @@ check_row2:
 	ret
 
 hitR2:
-	and blockRow2, ballCol
+	mov r16, ballCol   ; load ball pattern
+	eor r16, r31	   ; flip all bits
+	or blockRow2, r16
 	dec blockCounter
 	jmp revertY
 	ret
@@ -317,7 +322,9 @@ check_row3:
 	ret	
 
 hitR3:
-	and blockRow3, ballCol
+	mov r16, ballCol   ; load ball pattern
+	eor r16, r31	   ; flip all bits
+	or blockRow3, r16
 	dec blockCounter
 	jmp revertY
 	ret
@@ -332,11 +339,13 @@ check_row4:
 
 	and r16, r30	   ; AND bitwise both numbers
 	cpi r16, 0		   ; if number is greater than 0, ball hit the paddle
-	brne revertY
+	brne hitR4
 	ret
 
 hitR4:
-	and blockRow4, ballCol
+	mov r16, ballCol   ; load ball pattern
+	eor r16, r31	   ; flip all bits
+	or blockRow4, r16
 	dec blockCounter
 	jmp revertY
 	ret
@@ -490,7 +499,7 @@ start_position:
 	ldi r16, 0b00000001
 	out porta, r16
 	
-	ldi r16, 0b00000000
+	ldi r16, 0b10101010
 	out portc, r16
 	
 	call delay_10ms
@@ -499,7 +508,7 @@ start_position:
 	ldi r16, 0b00000010
 	out porta, r16
 	
-	ldi r16, 0b00000000
+	ldi r16, 0b01010101
 	out portc, r16
 	
 	call delay_10ms
@@ -508,7 +517,7 @@ start_position:
 	ldi r16, 0b00000100
 	out porta, r16
 	
-	ldi r16, 0b00000000
+	ldi r16, 0b10101010
 	out portc, r16
 	
 	call delay_10ms
@@ -517,7 +526,7 @@ start_position:
 	ldi r16, 0b00001000
 	out porta, r16
 	
-	ldi r16, 0b00000000
+	ldi r16, 0b01010101
 	out portc, r16
 	
 	call delay_10ms
