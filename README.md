@@ -51,6 +51,7 @@ note: we are using just one bread board
 
 ### 2.3 Test plan
 * Arduino is turned on -> Blocks, paddle and ball are in starting positions {image here}
+![alt text](https://github.com/Michaela97/asm-project/blob/master/start_postition.PNG "start position")
 * Left and Right buttons are pressed -> the ball is released, the game starts
 * Left or right button pressed when the game is not started -> nothing happens
 * Left button pressed during the game - >  the paddle moves to the left one pixel
