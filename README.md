@@ -47,7 +47,11 @@ Components:
 * Resistors  
 * Wires
 
-### 2.2 Test plan
+### 2.2 Sketch
+
+![alt text](https://github.com/Michaela97/asm-project/blob/master/atari%20breakout%20sketch.jpg "atari breakout sketch")
+
+### 2.3 Test plan
 * Arduino is turned on -> Blocks, paddle and ball are in starting positions {image here}
 * Left and Right buttons are pressed -> the ball is released, the game starts
 * Left or right button pressed when the game is not started -> nothing happens
@@ -63,3 +67,6 @@ Components:
 * The ball is in the bottom row -> the game is over, player loses – show sad face
 * The ball didn’t hit anything -> ball continues the movement according to its current vector
 * The ball hits the last block -> the game is over, player wins – show happy face
+
+
+
