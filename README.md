@@ -49,6 +49,8 @@ Components:
 
 ### 2.2 Sketch
 
+note: we are using just one bread board
+
 ![alt text](https://github.com/Michaela97/asm-project/blob/master/atari%20breakout%20sketch.jpg "atari breakout sketch")
 
 ### 2.3 Test plan
