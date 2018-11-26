@@ -13,15 +13,15 @@
 
 ;free: r16, r30, r31
 
-LDI R16, 0b11111111           ; writing bit pattern 1000 0000 to register 16
+LDI R16, 0b11111111     ; writing bit pattern 1000 0000 to register 16
 OUT DDRA, R16           ; setup data direction for port A
 out ddrc, r16
 ldi ballCol, 0b11101111 ; ball column
 ldi ballRow, 0b01000000 ; ball row
-ldi vectorX, 0b00000001 ; 100 left / 010 middle / 001 right
-ldi vectorY, 0b00000010 ; 10 up / 01 down
+ldi vectorX, 0b00000001 ; direction of vector (100 left / 010 middle / 001 right)
+ldi vectorY, 0b00000010 ; direction of vector (10 up / 01 down)
 
-ldi blockRow1, 0b00000000
+ldi blockRow1, 0b00000000 ;4 block rows
 ldi blockRow2, 0b00000000
 ldi blockRow3, 0b00000000
 ldi blockRow4, 0b00000000
@@ -29,7 +29,7 @@ ldi blockRow4, 0b00000000
 ldi r16, 32
 mov blockCounter, r16
 
-ldi paddleCol, 0b11000111 ; paddle column
+ldi paddleCol, 0b11000111 ; paddle column (0 - led on, 1 - led off) each bit corresponds to one column 
 
 ldi		r20, 0xff		; left button
 out		ddrg, r20	    ; set port G to input
@@ -39,7 +39,7 @@ out		ddrb, r20	    ; set port B to input
 
 call main ; for debug
 
-game_start:
+game_start:  ; loading start position, the game will start when both buttons are pressed 
 	call start_position
 	in r20, PING
 	cpi r20, 0
@@ -105,12 +105,12 @@ win:
 	call happy_face
 
 button:
-	in r20, PINB ; read from button on PING (41) to r20
-	cpi r20, 0
+	in r20, PINB ; read from button on PINB to r20
+	cpi r20, 0   ; check if right button was pressed
 	brne move_paddle_right
-	in r20, PING
-	cpi r20, 0
-	brne move_paddle_left
+	in r20, PING ; read from button on PING to r20
+	cpi r20, 0 ; check if left button was pressed
+	brne move_paddle_left 
 	ret
 	
 	rjmp main
@@ -410,9 +410,8 @@ check_game_over:
 	breq sad_face
 	ret
 
-sad_face:
-	;set up first row
-	ldi r16, 0b00000001
+sad_face: ;turn on leds to show a sad face
+	ldi r16, 0b00000001 ;set up first row
 	out porta, r16
 	
 	ldi r16, 0b11111111
@@ -420,8 +419,7 @@ sad_face:
 	
 	call delay_10ms
 
-	;set up second row
-	ldi r16, 0b00000010
+	ldi r16, 0b00000010 ;set up second row
 	out porta, r16
 	
 	ldi r16, 0b10011001
@@ -429,8 +427,8 @@ sad_face:
 	
 	call delay_10ms
 
-	;set up third row
-	ldi r16, 0b00000100
+	
+	ldi r16, 0b00000100 ;set up third row
 	out porta, r16
 	
 	ldi r16, 0b10011001
@@ -438,8 +436,8 @@ sad_face:
 	
 	call delay_10ms
 
-	;set up fourth row
-	ldi r16, 0b00001000
+	
+	ldi r16, 0b00001000 ;set up fourth row
 	out porta, r16
 	
 	ldi r16, 0b11111111
@@ -447,8 +445,8 @@ sad_face:
 	
 	call delay_10ms
 
-	;set up fifth row
-	ldi r16, 0b00010000
+	
+	ldi r16, 0b00010000 ;set up fifth row
 	out porta, r16
 	
 	ldi r16, 0b11100111
@@ -456,8 +454,8 @@ sad_face:
 	
 	call delay_10ms
 
-	;set up sixth row
-	ldi r16, 0b00100000
+	
+	ldi r16, 0b00100000 ;set up sixth row
 	out porta, r16
 	
 	ldi r16, 0b11011011
@@ -465,8 +463,8 @@ sad_face:
 	
 	call delay_10ms
 
-	;set up seventh row
-	ldi r16, 0b01000000
+	
+	ldi r16, 0b01000000 ;set up seventh row
 	out porta, r16
 	
 	ldi r16, 0b10111101
@@ -474,8 +472,8 @@ sad_face:
 	
 	call delay_10ms
 
-	;set up eighth row
-	ldi r16, 0b10000000
+	
+	ldi r16, 0b10000000 ;set up eighth row
 	out porta, r16
 	
 	ldi r16, 0b11111111
@@ -485,7 +483,8 @@ sad_face:
 
 	rjmp sad_face
 
-start_position:
+
+start_position: ; turn on leds to show start position
 	;set up first row
 	ldi r16, 0b00000001
 	out porta, r16
@@ -560,7 +559,7 @@ start_position:
 	ret
 
 
-happy_face:
+happy_face: ;turn on leds to show happy face
 	;set up first row
 	ldi r16, 0b00000001
 	out porta, r16
