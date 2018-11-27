@@ -50,7 +50,7 @@ note: we are using just one bread board
 ![alt text](https://github.com/Michaela97/asm-project/blob/master/atari%20breakout%20sketch.jpg "atari breakout sketch")
 
 ### 2.3 Test plan
-* Arduino is turned on -> Blocks, paddle and ball are in starting positions {image here}
+* Arduino is turned on -> Blocks, paddle and ball are in starting positions (see picture below)
 ![alt text](https://github.com/Michaela97/asm-project/blob/master/start_postition.PNG "start position")
 * Left and Right buttons are pressed -> the ball is released, the game starts
 * Left or right button pressed when the game is not started -> nothing happens
