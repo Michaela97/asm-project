@@ -66,5 +66,6 @@ note: we are using just one bread board
 * The ball didn’t hit anything -> ball continues the movement according to its current vector
 * The ball hits the last block -> the game is over, player wins – show happy face
 
+## 3. Test execution
 
-
+The game was tested by manual execution of the each test case from the test plan described above. As all tests have passed successfully, the game is ready tu use.
