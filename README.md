@@ -14,9 +14,10 @@
 ### Rules of the game : 
 
 Objective – hit with the ball all blocks on the screen
-Start the game - press left and right button in the same time
 
-The player moves with a paddle to the left or right in order to bounce the ball. The paddle has 3
+*Start the game - press left and right button in the same time
+
+The player moves with a paddle to the left or the right side in order to bounce the ball. The paddle has 3
 pixels width and 1 pixel height. The ball is moving diagonally. 
 When the ball touches right or left wall, it continues movement in
 Y axis and reversed X axis. If the ball hits the top wall it bounces down.
